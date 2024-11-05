@@ -6,51 +6,54 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [show, setShow] = useState(false);
-
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const navigateTo = useNavigate();
 
   const handleLogout = async () => {
-    await axios
-      .get("http://localhost:4000/api/v1/user/admin/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
-  };
+    localStorage.clear();
+    setIsAuthenticated(false);
+    toast.success("Admin Logged Out Successfully");
+    navigateTo("/login");  // Redirect to login page
 
-  const navigateTo = useNavigate();
+    // Uncomment this section if you want to make an API call to log out
+    /*
+    try {
+      const res = await axios.get("http://localhost:4000/api/v1/user/admin/logout", {
+        withCredentials: true,
+      });
+      toast.success(res.data.message);
+      setIsAuthenticated(false);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Logout failed.");
+    }
+    */
+  };
 
   const gotoHomePage = () => {
     navigateTo("/");
-    setShow(!show);
+    setShow(false);
   };
   const gotoDoctorsPage = () => {
     navigateTo("/doctors");
-    setShow(!show);
+    setShow(false);
   };
   const gotoMessagesPage = () => {
     navigateTo("/messages");
-    setShow(!show);
+    setShow(false);
   };
   const gotoAddNewDoctor = () => {
     navigateTo("/doctor/addnew");
-    setShow(!show);
+    setShow(false);
   };
   const gotoAddNewAdmin = () => {
     navigateTo("/admin/addnew");
-    setShow(!show);
+    setShow(false);
   };
 
   return (

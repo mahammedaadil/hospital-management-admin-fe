@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
+import axiosInstance from "../axios";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
@@ -15,8 +16,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const { data } = await axios.get(
-          "http://localhost:4000/api/v1/appointment/getall",
+        const { data } = await axiosInstance.get(
+          "appointment/getall",
           { withCredentials: true }
         );
         setAppointments(data.appointments);
@@ -29,8 +30,8 @@ const Dashboard = () => {
 
     const fetchDoctors = async () => {
       try {
-        const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/doctors",
+        const { data } = await axiosInstance.get(
+          "user/doctors",
           { withCredentials: true }
         );
         setDoctors(data.doctors);
@@ -45,8 +46,8 @@ const Dashboard = () => {
 
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
-      const { data } = await axios.put(
-        `http://localhost:4000/api/v1/appointment/update/${appointmentId}`,
+      const { data } = await axiosInstance.put(
+        `appointment/update/${appointmentId}`,
         { status },
         { withCredentials: true }
       );
@@ -65,8 +66,8 @@ const Dashboard = () => {
 
   const handleDeleteAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.delete(
-        `http://localhost:4000/api/v1/appointment/delete/${appointmentId}`,
+      const { data } = await axiosInstance.delete(
+        `appointment/delete/${appointmentId}`,
         { withCredentials: true }
       );
       setAppointments((prevAppointments) =>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../main";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../axios";
 
 const AddNewAdmin = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -24,9 +24,9 @@ const AddNewAdmin = () => {
   const handleAddNewAdmin = async (e) => {
     e.preventDefault();
     try {
-      await axios
+      await axiosInstance
         .post(
-          "http://localhost:4000/api/v1/user/admin/addnew",
+          "user/admin/addnew",
           { firstName, lastName, email, phone, dob, gender, password,confirmPassword },
           {
             withCredentials: true,

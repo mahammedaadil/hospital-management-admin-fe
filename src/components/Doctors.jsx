@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom"; 
+import axiosInstance from "../axios";
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -21,8 +22,8 @@ const Doctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/doctors",
+        const { data } = await axiosInstance.get(
+          "user/doctors",
           { withCredentials: true }
         );
         setDoctors(data.doctors);
@@ -35,7 +36,7 @@ const Doctors = () => {
 
   const deleteDoctor = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/v1/user/doctor/${id}`, {
+      await axiosInstance.delete(`user/doctor/${id}`, {
         withCredentials: true,
       });
       toast.success("Doctor deleted successfully");
@@ -53,8 +54,8 @@ const Doctors = () => {
   const handleUpdateDoctor = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:4000/api/v1/user/doctor/update/${editingDoctorId}`,
+      const response = await axiosInstance.put(
+        `doctor/update/${editingDoctorId}`,
         updatedDoctorData,
         { withCredentials: true }
       );

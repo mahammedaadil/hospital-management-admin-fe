@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa"; // Import the delete icon
+import axiosInstance from "../axios";
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -14,8 +15,8 @@ const Messages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const { data } = await axios.get(
-          "http://localhost:4000/api/v1/message/getall",
+        const { data } = await axiosInstance.get(
+          "message/getall",
           { withCredentials: true }
         );
         setMessages(data.messages);
@@ -38,7 +39,7 @@ const Messages = () => {
     }
   
     try {
-      await axios.delete(`http://localhost:4000/api/v1/message/delete/${id}`, {
+      await axiosInstance.delete(`delete/${id}`, {
         withCredentials: true,
       });
       toast.success("Message deleted successfully");
