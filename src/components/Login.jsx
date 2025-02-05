@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import axiosInstance from "../axios";  // Ensure this path is correct
+import axiosInstance from "../axios"; // Ensure this path is correct
 
 const Login = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
@@ -15,20 +15,23 @@ const Login = () => {
     try {
       const res = await axiosInstance.post(
         "user/login",
-        { email, password, role: "Admin" },
+        { email, password, role: "Admin" }, // Removed trailing space
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
+      
       toast.success(res.data.message);
       setIsAuthenticated(true);
+      localStorage.setItem("token", res.data.token);
       navigateTo("/");
+      // Clear the input fields after successful login
       setEmail("");
       setPassword("");
-      localStorage.setItem("token", res.data.token);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed.");
+      const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+      toast.error(errorMessage);
     }
   };
 
@@ -47,12 +50,14 @@ const Login = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required // Optional: make the field required
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required // Optional: make the field required
         />
         <div style={{ justifyContent: "center", alignItems: "center" }}>
           <button type="submit">Login</button>

@@ -1,9 +1,8 @@
-import axios from "axios";
+import axiosInstance from "../axios"; 
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom"; 
-import axiosInstance from "../axios";
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -22,13 +21,10 @@ const Doctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const { data } = await axiosInstance.get(
-          "user/doctors",
-          { withCredentials: true }
-        );
+        const { data } = await axiosInstance.get("user/doctors");
         setDoctors(data.doctors);
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response?.data?.message || "Error fetching doctors");
       }
     };
     fetchDoctors();
@@ -36,13 +32,11 @@ const Doctors = () => {
 
   const deleteDoctor = async (id) => {
     try {
-      await axiosInstance.delete(`user/doctor/${id}`, {
-        withCredentials: true,
-      });
+      await axiosInstance.delete(`/user/doctor/${id}`);
       toast.success("Doctor deleted successfully");
       setDoctors(doctors.filter((doctor) => doctor._id !== id));
     } catch (error) {
-      toast.error("Failed to delete doctor");
+      toast.error(error.response?.data?.message || "Failed to delete doctor");
     }
   };
 
@@ -55,9 +49,8 @@ const Doctors = () => {
     e.preventDefault();
     try {
       const response = await axiosInstance.put(
-        `doctor/update/${editingDoctorId}`,
-        updatedDoctorData,
-        { withCredentials: true }
+        `/user/doctor/update/${editingDoctorId}`,
+        updatedDoctorData
       );
 
       if (response.data.success) {
@@ -68,12 +61,20 @@ const Doctors = () => {
           )
         );
         setEditingDoctorId(null); // Close the editing modal
+        setUpdatedDoctorData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          dob: "",
+          gender: "",
+          doctorDepartment: "",
+        }); // Reset form data after successful update
       } else {
         toast.error("Update failed: " + response.data.message);
       }
     } catch (error) {
-      const message = error.response?.data?.message || "Error updating doctor.";
-      toast.error(message);
+      toast.error(error.response?.data?.message || "Error updating doctor.");
     }
   };
 

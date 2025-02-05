@@ -18,42 +18,8 @@ const Sidebar = () => {
   const handleLogout = async () => {
     localStorage.clear();
     setIsAuthenticated(false);
+    navigateTo("/login"); // Fixed function call
     toast.success("Admin Logged Out Successfully");
-    navigateTo("/login");  // Redirect to login page
-
-    // Uncomment this section if you want to make an API call to log out
-    /*
-    try {
-      const res = await axios.get("http://localhost:4000/api/v1/user/admin/logout", {
-        withCredentials: true,
-      });
-      toast.success(res.data.message);
-      setIsAuthenticated(false);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Logout failed.");
-    }
-    */
-  };
-
-  const gotoHomePage = () => {
-    navigateTo("/");
-    setShow(false);
-  };
-  const gotoDoctorsPage = () => {
-    navigateTo("/doctors");
-    setShow(false);
-  };
-  const gotoMessagesPage = () => {
-    navigateTo("/messages");
-    setShow(false);
-  };
-  const gotoAddNewDoctor = () => {
-    navigateTo("/doctor/addnew");
-    setShow(false);
-  };
-  const gotoAddNewAdmin = () => {
-    navigateTo("/admin/addnew");
-    setShow(false);
   };
 
   return (
@@ -63,17 +29,17 @@ const Sidebar = () => {
         className={show ? "show sidebar" : "sidebar"}
       >
         <div className="links">
-          <TiHome onClick={gotoHomePage} />
-          <FaUserDoctor onClick={gotoDoctorsPage} />
-          <MdAddModerator onClick={gotoAddNewAdmin} />
-          <IoPersonAddSharp onClick={gotoAddNewDoctor} />
-          <AiFillMessage onClick={gotoMessagesPage} />
+          <TiHome onClick={() => navigateTo("/")} />
+          <FaUserDoctor onClick={() => navigateTo("/doctors")} />
+          <MdAddModerator onClick={() => navigateTo("/admin/addnew")} />
+          <IoPersonAddSharp onClick={() => navigateTo("/doctor/addnew")} />
+          <AiFillMessage onClick={() => navigateTo("/messages")} />
           <RiLogoutBoxFill onClick={handleLogout} />
         </div>
       </nav>
       <div
         className="wrapper"
-        style={isAuthenticated ? { display: "none" } : { display: "flex" }}
+        style={isAuthenticated ? { display: "flex" } : { display: "none" }}
       >
         <GiHamburgerMenu className="hamburger" onClick={() => setShow(!show)} />
       </div>

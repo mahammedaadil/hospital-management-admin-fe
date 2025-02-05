@@ -1,17 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axiosInstance from "./axios";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import AddNewDoctor from "./components/AddNewDoctor";
 import Messages from "./components/Messages";
 import Doctors from "./components/Doctors";
 import { Context } from "./main";
-import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
-
 import "./App.css";
 
 const App = () => {
@@ -21,12 +20,9 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axiosInstance.get(
-          "user/admin/me",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axiosInstance.get("user/admin/me", {
+          withCredentials: true,
+        });
         setIsAuthenticated(true);
         setAdmin(response.data.user);
       } catch (error) {
@@ -35,11 +31,11 @@ const App = () => {
       }
     };
     fetchUser();
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <Router>
-      <Sidebar />
+      {isAuthenticated && <Sidebar />} {/* Sidebar only shows if authenticated */}
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
@@ -47,7 +43,6 @@ const App = () => {
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
-        
       </Routes>
       <ToastContainer position="top-center" />
     </Router>
