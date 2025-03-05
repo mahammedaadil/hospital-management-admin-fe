@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom";
-import axiosInstance from "../axios"; // Ensure correct import path
+import axiosInstance from "../axios";
 import { toast } from "react-toastify";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -11,6 +11,9 @@ const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [totalAppointments, setTotalAppointments] = useState(0);
   const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState("All");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -61,6 +64,26 @@ const Dashboard = () => {
     }
   };
 
+  const handleUpdatePresent = async (appointmentId, present) => {
+    try {
+      const { data } = await axiosInstance.put(
+        `/appointment/update/${appointmentId}`,
+        { present },
+        { withCredentials: true }
+      );
+      setAppointments((prevAppointments) =>
+        prevAppointments.map((appointment) =>
+          appointment._id === appointmentId
+            ? { ...appointment, present }
+            : appointment
+        )
+      );
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update present status");
+    }
+  };
+
   const handleDeleteAppointment = async (appointmentId) => {
     try {
       const { data } = await axiosInstance.delete(
@@ -81,6 +104,17 @@ const Dashboard = () => {
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
+
+  // Filter appointments based on selected doctor, date, and search term
+  const filteredAppointments = appointments.filter(appointment => {
+    const matchesDoctor = selectedDoctor === "All" || `${appointment.doctor.firstName} ${appointment.doctor.lastName}` === selectedDoctor;
+    const matchesDate = selectedDate ? new Date(appointment.appointment_date).toLocaleDateString() === new Date(selectedDate).toLocaleDateString() : true;
+    const matchesSearchTerm =
+      appointment.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.lastName.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesDoctor && matchesDate && matchesSearchTerm;
+  });
 
   return (
     <section className="dashboard page">
@@ -110,6 +144,50 @@ const Dashboard = () => {
           <h3>{doctors.length}</h3>
         </div>
       </div>
+
+      {/* Filters Row */}
+      <div className="filters-row">
+        {/* Doctor Filter Dropdown */}
+        <div className="filter">
+          <label htmlFor="doctorSelect">Filter by Doctor: </label>
+          <select
+            id="doctorSelect"
+            value={selectedDoctor}
+            onChange={(e) => setSelectedDoctor(e.target.value)}
+          >
+            <option value="All">All</option>
+            {doctors.map((doctor) => (
+              <option key={doctor._id} value={`${doctor.firstName} ${doctor.lastName}`}>
+                {`${doctor.firstName} ${doctor.lastName}`}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Search Bar */}
+        <div className="filter search-bar">
+          <label htmlFor="searchPatients">Search Patient: </label>
+          <input
+            type="text"
+            id="searchPatients"
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        {/* Date Filter */}
+        <div className="filter">
+          <label htmlFor="dateSelect">Filter by Date: </label>
+          <input
+            type="date"
+            id="dateSelect"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className="banner">
         <h5>Appointments</h5>
         <table>
@@ -122,18 +200,19 @@ const Dashboard = () => {
               <th>Doctor</th>
               <th>Status</th>
               <th>Visited</th>
+              <th>Present</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {appointments.length > 0 ? (
-              appointments.map((appointment) => (
+            {filteredAppointments.length > 0 ? (
+              filteredAppointments.map((appointment) => (
                 <tr key={appointment._id}>
                   <td>{`${appointment.firstName.toUpperCase()} ${appointment.lastName.toUpperCase()}`}</td>
                   <td>{new Date(appointment.appointment_date).toLocaleDateString()}</td>
                   <td>{appointment.timeSlot}</td>
-                  <td>{`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}</td>
                   <td>{appointment.department}</td>
+                  <td>{`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}</td>
                   <td>
                     <select
                       className={
@@ -148,15 +227,9 @@ const Dashboard = () => {
                         handleUpdateStatus(appointment._id, e.target.value)
                       }
                     >
-                      <option value="Pending" className="value-pending">
-                        Pending
-                      </option>
-                      <option value="Accepted" className="value-accepted">
-                        Accepted
-                      </option>
-                      <option value="Rejected" className="value-rejected">
-                        Rejected
-                      </option>
+                      <option value="Pending" className="value-pending">Pending</option>
+                      <option value="Accepted" className="value-accepted">Accepted</option>
+                      <option value="Rejected" className="value-rejected">Rejected</option>
                     </select>
                   </td>
                   <td>
@@ -165,6 +238,17 @@ const Dashboard = () => {
                     ) : (
                       <AiFillCloseCircle className="red" />
                     )}
+                  </td>
+                  <td>
+                    <select
+                      value={appointment.present}
+                      onChange={(e) =>
+                        handleUpdatePresent(appointment._id, e.target.value)
+                      }
+                    >
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
                   </td>
                   <td>
                     <FaTrash
@@ -177,7 +261,7 @@ const Dashboard = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="8">No Appointments Found!</td>
+                <td colSpan="9">No Appointments Found!</td>
               </tr>
             )}
           </tbody>
