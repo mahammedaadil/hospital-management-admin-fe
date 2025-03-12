@@ -200,6 +200,9 @@ body {
   background: #3939d9f2;
   color: #fff;
 }
+
+
+
 .dashboard .banner:first-child .thirdBox {
   color: #ff008d;
   background: #fff;
@@ -493,6 +496,22 @@ body {
 .doctors .banner .card div p span {
   font-weight: 500;
 }
+
+.doctor-report {
+  background-color: #333;  /* Dark Gray */
+  color: #fff;  /* White Text */
+  padding: 10px 16px;  /* Spacing */
+  font-size: 14px;  /* Text Size */
+  border: none;  /* Remove Border */
+  border-radius: 5px;  /* Rounded Corners */
+  cursor: pointer;  /* Pointer Cursor */
+  transition: background-color 0.3s ease-in-out;
+}
+
+.doctor-report:hover {
+  background-color: #555;  /* Slightly Lighter Gray on Hover */
+}
+
 
 @media (max-width: 350px) {
   .doctors .banner {
@@ -1001,3 +1020,114 @@ input[type="time"]:before {
   cursor: pointer;
 }
 
+
+
+/* Reports Component CSS */
+
+.reports-container {
+  padding: 40px;
+  background: #e5e5e5;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  margin-left: 120px; /* Ensure it doesn't overlap with the sidebar */
+  min-height: calc(112.5vh - 80px); /* Minimum height to fill the viewport */
+  overflow-y: auto; /* Add scroll if content overflows */
+}
+
+.reports-container h2 {
+  font-size: 2.3rem;
+  color: #3939d9f2;
+  margin-bottom: 30px;
+}
+
+.reports-container table {
+  width: 100%;
+  color: #111;
+  font-size: 20px;
+  border-collapse: collapse;
+}
+
+.reports-container table thead {
+  background-color: #3939d9f2;
+  color: #fff;
+}
+
+.reports-container table thead th {
+  padding: 12px;
+  text-align: left;
+}
+
+.reports-container table tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.reports-container table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.reports-container table tbody td a {
+  color: #ff008d;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.reports-container table tbody td a:hover {
+  color: #2a2aaf;
+}
+
+/* Responsive Design */
+@media (max-width: 1208px) {
+  .reports-container {
+    margin-left: 0; /* Remove margin on smaller screens */
+    border-radius: 0; /* Remove border radius on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .reports-container {
+    padding: 20px; /* Reduce padding on smaller screens */
+    min-height: auto; /* Allow height to adjust based on content */
+  }
+
+  .reports-container h2 {
+    font-size: 1.75rem; /* Reduce font size for smaller screens */
+    margin-bottom: 20px;
+  }
+
+  .reports-container table {
+    font-size: 16px; /* Reduce font size for smaller screens */
+  }
+
+  .reports-container table thead th,
+  .reports-container table tbody td {
+    padding: 8px; /* Reduce padding for smaller screens */
+  }
+}
+
+@media (max-width: 460px) {
+  .reports-container table {
+    font-size: 14px; /* Further reduce font size for very small screens */
+  }
+
+  .reports-container table thead th,
+  .reports-container table tbody td {
+    padding: 6px; /* Further reduce padding for very small screens */
+  }
+}
+
+.download-btn {
+  background-color : #2a2aaf; /* Button background */
+  color: #ffffff; /* Text color */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.download-btn:hover {
+  background-color:blue; /* Darker shade on hover */
+}
