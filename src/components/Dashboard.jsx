@@ -15,6 +15,20 @@ const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); // New state for search
 
+  const handleBackup = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/v1/backup/backupnow", {
+        method: "POST",
+      });
+      const data = await response.json();
+      toast.success(data.message); // Use toast for better UI feedback
+    } catch (error) {
+      console.error("Backup Error:", error);
+      toast.error("Backup failed. Please try again.");
+    }
+  };
+  
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -138,6 +152,9 @@ const Dashboard = () => {
         <div className="secondBox">
           <p>Total Appointments</p>
           <h3>{totalAppointments}</h3>
+          <button onClick={handleBackup} className="backup-button">
+    Backup Database
+  </button>
         </div>
         <div className="thirdBox">
           <p>Registered Doctors</p>

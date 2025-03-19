@@ -376,6 +376,19 @@ body {
   font-size: 14px;
   width: 250px; /* Adjust width as needed */
 }
+.backup-button {
+  padding: 10px 15px;
+  background-color: #ff008d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.backup-button:hover {
+  background-color:lightpink;
+}
 
 
 .sidebar {
