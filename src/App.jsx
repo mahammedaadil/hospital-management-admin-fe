@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import Reports from "./components/Reports";
+import Backup from "./components/Backup";
 import "./App.css";
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/backup" element={<Backup />} />
       </Routes>
       <ToastContainer position="top-center" />
     </Router>

@@ -14,30 +14,7 @@ const Dashboard = () => {
   const [selectedDoctor, setSelectedDoctor] = useState("All");
   const [selectedDate, setSelectedDate] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); // New state for search
-
-
-  const handleFullBackup = async () => {
-    try {
-      const response = await axiosInstance.get("backup/backup");
-      toast.success(response.data.message);
-    } catch (error) {
-      console.error("Full Backup Error:", error);
-      toast.error("Full Backup failed. Please try again.");
-    }
-  };
-
-  
-  const handleBackup = async () => {
-    try {
-      const response = await axiosInstance.post("/backup/backupnow");
-      toast.success(response.data.message); // Use toast for better UI feedback
-    } catch (error) {
-      console.error("Backup Error:", error);
-      toast.error("Backup failed. Please try again.");
-    }
-  };
-  
-  
+    
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -162,16 +139,12 @@ const Dashboard = () => {
         <div className="secondBox">
           <p>Total Appointments</p>
           <h3>{totalAppointments}</h3>
-          <button onClick={handleBackup} className="backup-button">
-          Backup Database
-         </button>
+         
         </div>
         <div className="thirdBox">
           <p>Registered Doctors</p>
           <h3>{doctors.length}</h3>
-          <button onClick={handleFullBackup} className="backup-button">
-         Full Backup
-        </button>
+         
         </div>
       </div>
 

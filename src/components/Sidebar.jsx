@@ -6,7 +6,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { HiDocumentReport } from "react-icons/hi"; // New Reports Icon
+import { HiDocumentReport } from "react-icons/hi"; // Reports Icon
+import { FaDatabase } from "react-icons/fa"; // Backup Icon
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +37,7 @@ const Sidebar = () => {
           <IoPersonAddSharp onClick={() => navigateTo("/doctor/addnew")} />
           <AiFillMessage onClick={() => navigateTo("/messages")} />
           <HiDocumentReport onClick={() => navigateTo("/reports")} /> {/* Reports Icon */}
+          <FaDatabase onClick={() => navigateTo("/backup")} /> {/* Backup Icon */}
           <RiLogoutBoxFill onClick={handleLogout} />
         </div>
       </nav>
