@@ -510,20 +510,58 @@ body {
   font-weight: 500;
 }
 
-.doctor-report {
-  background-color: #333;  /* Dark Gray */
-  color: #fff;  /* White Text */
-  padding: 10px 16px;  /* Spacing */
-  font-size: 14px;  /* Text Size */
-  border: none;  /* Remove Border */
-  border-radius: 5px;  /* Rounded Corners */
-  cursor: pointer;  /* Pointer Cursor */
-  transition: background-color 0.3s ease-in-out;
+
+/* Doctor card status styling */
+.doctor-card {
+  position: relative;
 }
 
-.doctor-report:hover {
-  background-color: #555;  /* Slightly Lighter Gray on Hover */
+.status-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
 }
+
+.status-badge {
+  background-color: #4CAF50; /* Green for active */
+}
+
+.doctor-card.inactive .status-badge {
+  background-color: #f44336; /* Red for inactive */
+}
+
+.doctor-card.inactive {
+  opacity: 0.8;
+  background-color: #f5f5f5;
+}
+
+/* Button styling */
+.btn-activate {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-deactivate {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-update {
+  background-color: #2196F3;
+  color: white;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
 
 
 @media (max-width: 350px) {
@@ -1250,3 +1288,5 @@ input[type="time"]:before {
     font-size: 12px;
   }
 }
+
+

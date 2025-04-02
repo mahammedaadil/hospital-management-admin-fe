@@ -24,6 +24,11 @@ const Sidebar = () => {
     toast.success("Admin Logged Out Successfully");
   };
 
+  const handleNavigation = (path, message) => {
+    navigateTo(path);
+    toast.info(message);
+  };
+
   return (
     <>
       <nav
@@ -31,13 +36,13 @@ const Sidebar = () => {
         className={show ? "show sidebar" : "sidebar"}
       >
         <div className="links">
-          <TiHome onClick={() => navigateTo("/")} />
-          <FaUserDoctor onClick={() => navigateTo("/doctors")} />
-          <MdAddModerator onClick={() => navigateTo("/admin/addnew")} />
-          <IoPersonAddSharp onClick={() => navigateTo("/doctor/addnew")} />
-          <AiFillMessage onClick={() => navigateTo("/messages")} />
-          <HiDocumentReport onClick={() => navigateTo("/reports")} /> {/* Reports Icon */}
-          <FaDatabase onClick={() => navigateTo("/backup")} /> {/* Backup Icon */}
+          <TiHome onClick={() => handleNavigation("/", "Navigated to Home")} />
+          <FaUserDoctor onClick={() => handleNavigation("/doctors", "Navigated to Doctors")} />
+          <MdAddModerator onClick={() => handleNavigation("/admin/addnew", "Navigated to Add New Admin")} />
+          <IoPersonAddSharp onClick={() => handleNavigation("/doctor/addnew", "Navigated to Add New Doctor")} />
+          <AiFillMessage onClick={() => handleNavigation("/messages", "Navigated to Messages")} />
+          <HiDocumentReport onClick={() => handleNavigation("/reports", "Navigated to Reports")} />
+          <FaDatabase onClick={() => handleNavigation("/backup", "Navigated to Backup")} />
           <RiLogoutBoxFill onClick={handleLogout} />
         </div>
       </nav>

@@ -163,7 +163,7 @@ const Reports = () => {
       doctor.dob ? doctor.dob.substring(0, 10) : "N/A",
       capitalizeWords(doctor.gender || "N/A"),
       capitalizeWords(doctor.doctorDepartment || "N/A"),
-      `₹${doctor.doctorFees || 0}`,
+      `${doctor.doctorFees || 0}`,
       doctor.joiningDate ? doctor.joiningDate.substring(0, 10) : "N/A",
       doctor.resignationDate ? doctor.resignationDate.substring(0, 10) : "N/A",
       doctor.doctorAvailability.length > 0
@@ -283,7 +283,7 @@ const Reports = () => {
         </thead>
         <tbody>
           <tr>
-            <td>Department-Wise Doctor Report</td>
+            <td>Department-Wise Appointments Report</td>
             <td>Here Doctor Report Can Be Fetched Department-Wise</td>
             <td>PDF</td>
             <td>N/A</td>
